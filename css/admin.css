@@ -1,0 +1,91 @@
+.admin-dashboard {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 15px;
+    margin-top: 20px;
+}
+
+.user-list-panel table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.user-list-panel th,
+.user-list-panel td {
+    border: 1px solid var(--border-color);
+    padding: 8px 12px;
+    text-align: left;
+    font-size: 14px;
+}
+
+.user-list-panel th {
+    background-color: var(--secondary-bg);
+    color: var(--highlight-color);
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.user-list-panel td {
+    color: var(--text-color);
+}
+
+.user-list-panel .btn-delete {
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+.add-user-panel .input-group {
+    margin-bottom: 15px;
+}
+
+.add-user-panel label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: var(--muted-text);
+}
+
+.add-user-panel input[type="text"],
+.add-user-panel input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    font-family: 'Share Tech Mono', monospace;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.add-user-panel input[type="text"]:focus,
+.add-user-panel input[type="password"]:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 8px rgba(0, 255, 157, 0.4);
+}
+
+.add-user-panel button[type="submit"] {
+    width: 100%;
+    justify-content: center;
+}
+
+.admin-error {
+    color: var(--danger-color);
+    font-size: 13px;
+    margin-top: 10px;
+    min-height: 18px;
+}
+
+@media (max-width: 992px) {
+    .admin-dashboard {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .user-list-panel th,
+    .user-list-panel td {
+        padding: 6px 8px;
+        font-size: 13px;
+    }
+}

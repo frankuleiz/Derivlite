@@ -1,0 +1,1163 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root {
+    --primary-bg: #0c0d10;
+    --secondary-bg: #151820;
+    --panel-bg: #1a1d25;
+    --text-color: #a5f5d7;
+    --muted-text: #7aa689;
+    --accent-color: #00ff9d;
+    --highlight-color: #00c4ff;
+    --border-color: #2a3040;
+    --danger-color: #ff5252;
+    --warning-color: #ffbc2c;
+    --success-color: #34d399;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--primary-bg);
+    color: var(--text-color);
+    font-family: 'Source Code Pro', monospace;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header styles */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    margin-bottom: 20px;
+    box-shadow: 0 5px 15px rgba(0, 255, 157, 0.08);
+    border-radius: 4px;
+    position: relative; /* Needed for absolute positioning of admin link */
+}
+
+.admin-link {
+    position: absolute;
+    top: 10px;
+    right: 150px; /* Adjust as needed */
+    font-size: 13px;
+    color: var(--warning-color);
+    text-decoration: none;
+    display: none; /* Hidden by default */
+    align-items: center;
+    gap: 5px;
+    transition: color 0.2s;
+}
+
+.admin-link:hover {
+    color: var(--highlight-color);
+}
+
+.admin-link i {
+    font-size: 14px;
+}
+
+.logo {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: var(--accent-color);
+    text-shadow: 0 0 5px rgba(0, 255, 157, 0.5);
+}
+
+.accent {
+    color: var(--highlight-color);
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-color);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 255, 157, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 5px rgba(0, 255, 157, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 255, 157, 0);
+    }
+}
+
+.status-text {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+/* Dashboard grid layout */
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 15px;
+}
+
+/* Panel styles */
+.panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 15px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--accent-color), transparent);
+    z-index: 1;
+}
+
+.panel h2 {
+    font-size: 16px;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.panel h3 {
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: var(--highlight-color);
+}
+
+/* Control panel */
+.control-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.control-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+/* Settings area */
+.settings {
+    margin-top: 15px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 15px;
+}
+
+.setting-group {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.setting-group label {
+    font-size: 14px;
+    color: var(--muted-text);
+}
+
+.setting-group input {
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 5px;
+    width: 100px;
+    font-family: 'Share Tech Mono', monospace;
+    border-radius: 3px;
+}
+
+.setting-group input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 5px rgba(0, 255, 157, 0.3);
+}
+
+/* Button styles */
+.btn {
+    background: var(--secondary-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    font-family: 'Share Tech Mono', monospace;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn.primary {
+    background: rgba(0, 255, 157, 0.2);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.btn.primary:hover {
+    background: rgba(0, 255, 157, 0.3);
+    box-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+}
+
+.btn.danger {
+    background: rgba(255, 82, 82, 0.2);
+    border-color: var(--danger-color);
+    color: var(--danger-color);
+}
+
+.btn.danger:hover:not([disabled]) {
+    background: rgba(255, 82, 82, 0.3);
+    box-shadow: 0 0 10px rgba(255, 82, 82, 0.5);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Log terminal */
+.log-terminal {
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.terminal {
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    padding: 10px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    overflow-y: auto;
+    flex: 1;
+    position: relative;
+}
+
+.terminal::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        transparent,
+        transparent 2px,
+        rgba(0, 255, 157, 0.03) 2px,
+        rgba(0, 255, 157, 0.03) 4px
+    );
+    pointer-events: none;
+}
+
+.log-line {
+    margin-bottom: 4px;
+    animation: fadeIn 0.3s ease-in;
+    line-height: 1.4;
+    text-shadow: 0 0 2px rgba(0, 255, 157, 0.5);
+}
+
+.log-matrix {
+    animation: matrixFadeIn 0.2s ease-in;
+    opacity: 0.85;
+}
+
+.log-alert {
+    animation: alertPulse 1s ease-in-out;
+    font-weight: bold;
+}
+
+.log-success {
+    animation: successPulse 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes matrixFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    100% {
+        opacity: 0.85;
+        transform: translateY(0);
+    }
+}
+
+@keyframes alertPulse {
+    0%, 100% {
+        text-shadow: 0 0 2px rgba(255, 82, 82, 0.5);
+    }
+    50% {
+        text-shadow: 0 0 8px rgba(255, 82, 82, 0.8);
+    }
+}
+
+@keyframes successPulse {
+    0%, 100% {
+        text-shadow: 0 0 2px rgba(52, 211, 153, 0.5);
+    }
+    50% {
+        text-shadow: 0 0 8px rgba(52, 211, 153, 0.8);
+    }
+}
+
+/* Prediction panel */
+.prediction-panel {
+}
+
+.prediction-result h3 {
+    text-align: center;
+    margin-bottom: 10px;
+    color: var(--highlight-color);
+}
+
+.prediction-digits {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+    justify-content: center;
+    margin-bottom: 15px;
+    min-height: 60px;
+    align-items: center;
+}
+
+.prediction-digit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    border-radius: 3px;
+    min-width: 60px;
+}
+
+.prediction-digit.high {
+    background: rgba(52, 211, 153, 0.2);
+    border: 1px solid var(--success-color);
+}
+
+.prediction-digit.medium {
+    background: rgba(255, 188, 44, 0.2);
+    border: 1px solid var(--warning-color);
+}
+
+.prediction-digit.low {
+    background: rgba(255, 82, 82, 0.2);
+    border: 1px solid var(--danger-color);
+}
+
+.pred-number {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.pred-percent {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.recommendation {
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    padding: 10px;
+}
+
+.recommendation h3 {
+    text-align: center;
+}
+
+.trade-action {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.btn.action {
+    flex: 1;
+    justify-content: center;
+}
+
+.btn.matches {
+    background: rgba(52, 211, 153, 0.2);
+    border-color: var(--success-color);
+    color: var(--success-color);
+}
+
+.btn.differs {
+    background: rgba(255, 82, 82, 0.2);
+    border-color: var(--danger-color);
+    color: var(--danger-color);
+}
+
+.confidence-meter {
+    margin-top: 10px;
+}
+
+.confidence-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.meter-bar {
+    height: 6px;
+    background: var(--border-color);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.meter-fill {
+    height: 100%;
+    background: var(--success-color);
+    width: 68%;
+    transition: width 0.5s ease;
+}
+
+/* Scanlines effect for the hacker vibe */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%,
+        rgba(0, 255, 157, 0.02) 50%
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0.7;
+}
+
+/* Login Modal Styles */
+.login-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(12, 13, 16, 0.9); /* Dark overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it's on top */
+    backdrop-filter: blur(5px);
+}
+
+.login-popup {
+    background: var(--panel-bg);
+    padding: 30px;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 5px 25px rgba(0, 255, 157, 0.15);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-popup h2 {
+    color: var(--accent-color);
+    margin-bottom: 20px;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.login-popup .input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.login-popup label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: var(--muted-text);
+}
+
+.login-popup input[type="text"],
+.login-popup input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    font-family: 'Share Tech Mono', monospace;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+/* Password visibility toggle styles */
+.password-container {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--muted-text);
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 5;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.password-toggle:hover {
+    color: var(--accent-color);
+}
+
+.password-container input[type="text"],
+.password-container input[type="password"] {
+    padding-right: 35px; /* Make space for the toggle icon */
+}
+
+.login-popup input[type="text"]:focus,
+.login-popup input[type="password"]:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 8px rgba(0, 255, 157, 0.4);
+}
+
+.login-popup .btn-login {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+}
+
+.login-popup .get-login-link {
+    display: block;
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--highlight-color);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.login-popup .get-login-link:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+.login-error {
+    color: var(--danger-color);
+    font-size: 13px;
+    margin-top: 15px;
+    min-height: 18px; /* Reserve space */
+    text-align: center;
+}
+
+/* Disclaimer Link in Login Popup */
+.disclaimer-trigger-container {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.disclaimer-link {
+    font-size: 13px;
+    color: var(--muted-text);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.disclaimer-link:hover {
+    color: var(--warning-color);
+    text-decoration: underline;
+}
+
+/* Payment Popup Styles */
+.payment-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(12, 13, 16, 0.95); /* Slightly darker overlay */
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    z-index: 1001; /* Above login overlay */
+    backdrop-filter: blur(8px);
+}
+
+.payment-popup {
+    background: var(--panel-bg);
+    padding: 30px 40px;
+    border-radius: 5px;
+    border: 1px solid var(--accent-color);
+    box-shadow: 0 5px 30px rgba(0, 255, 157, 0.2);
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
+    position: relative;
+}
+
+.payment-popup h3 {
+    color: var(--accent-color);
+    margin-bottom: 15px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 18px;
+}
+
+.payment-popup p {
+    font-size: 14px;
+    margin-bottom: 20px;
+    line-height: 1.7;
+    color: var(--muted-text);
+}
+
+.payment-popup .payment-link {
+    display: inline-block;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    color: var(--highlight-color);
+    padding: 10px 15px;
+    border-radius: 3px;
+    word-break: break-all; /* Wrap long links */
+    font-family: 'Share Tech Mono', monospace;
+    text-decoration: none;
+    margin-bottom: 25px;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.payment-popup .payment-link:hover {
+    background: var(--primary-bg);
+    border-color: var(--highlight-color);
+}
+
+.payment-popup .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: var(--muted-text);
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.payment-popup .close-btn:hover {
+    color: var(--danger-color);
+}
+
+/* Disclaimer Popup Styles */
+.disclaimer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(12, 13, 16, 0.97); /* Even darker for emphasis */
+    display: flex; /* Changed from none for initial state in HTML */
+    justify-content: center;
+    align-items: center;
+    z-index: 1002; /* Above login and payment overlays */
+    backdrop-filter: blur(10px); /* Stronger blur */
+}
+
+.disclaimer-popup {
+    background: var(--secondary-bg); /* Darker than panel-bg for contrast */
+    padding: 25px 30px;
+    border-radius: 8px;
+    border: 2px solid var(--warning-color);
+    box-shadow: 0 0 20px rgba(255, 188, 44, 0.4), 0 0 40px rgba(255, 188, 44, 0.2); /* Enhanced shadow */
+    width: 90%; /* Adjusted from 95% for better edge spacing */
+    max-width: 550px; /* Slightly wider */
+    text-align: left;
+    position: relative;
+    color: var(--text-color);
+    animation: disclaimerFadeIn 0.3s ease-out;
+    overflow-wrap: break-word; /* Ensure long words in text content break correctly */
+    max-height: 90vh; /* Ensures it fits vertically on all screens */
+    overflow-y: auto; /* Allows scrolling for long content on all screens */
+}
+
+@keyframes disclaimerFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.disclaimer-popup h3 {
+    color: var(--warning-color);
+    margin-bottom: 20px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    overflow-wrap: break-word; /* Also apply to headings if they could be long */
+}
+
+.disclaimer-popup p {
+    font-size: 14px;
+    margin-bottom: 15px;
+    line-height: 1.7;
+    color: var(--muted-text);
+}
+
+.disclaimer-popup p strong {
+    color: var(--text-color);
+    font-weight: 600; 
+}
+
+.disclaimer-popup .contact-info-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 15px;
+}
+
+.disclaimer-popup .contact-info-list li {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted-text);
+    overflow-wrap: break-word; /* Ensure text in list items wraps */
+}
+
+.disclaimer-popup .contact-info-list i {
+    color: var(--highlight-color);
+    width: 16px; 
+    text-align: center;
+}
+
+.disclaimer-popup .contact-info-list a {
+    color: var(--highlight-color);
+    text-decoration: none;
+    word-break: break-all; /* Keep for URLs */
+}
+
+.disclaimer-popup .contact-info-list a:hover {
+    text-decoration: underline;
+    color: var(--accent-color);
+}
+
+/* Official Channels styling in disclaimer */
+.disclaimer-popup .official-channels {
+    background: rgba(42, 48, 64, 0.5);
+    border-radius: 6px;
+    padding: 15px;
+    margin: 20px 0;
+    border-left: 3px solid var(--highlight-color);
+}
+
+.disclaimer-popup .official-channels h4 {
+    color: var(--highlight-color);
+    font-size: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.disclaimer-popup .channels-intro {
+    font-size: 14px;
+    margin-bottom: 15px;
+    color: var(--muted-text);
+}
+
+.disclaimer-popup .social-links-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 15px;
+}
+
+.disclaimer-popup .social-item {
+    margin-bottom: 10px;
+    padding: 8px 10px;
+    background: rgba(0, 196, 255, 0.08);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    transition: background 0.2s ease;
+}
+
+.disclaimer-popup .social-item:hover {
+    background: rgba(0, 196, 255, 0.15);
+}
+
+.disclaimer-popup .social-item i {
+    color: var(--highlight-color);
+    width: 20px;
+    font-size: 18px;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.disclaimer-popup .social-label {
+    font-weight: 600;
+    color: var(--text-color);
+    margin-right: 8px;
+}
+
+.disclaimer-popup .social-item a {
+    color: var(--highlight-color);
+    text-decoration: none;
+    word-break: break-all;
+}
+
+.disclaimer-popup .social-item a:hover {
+    text-decoration: underline;
+    color: var(--accent-color);
+}
+
+.disclaimer-popup .verification-note {
+    font-size: 13px;
+    color: var(--warning-color);
+    text-align: center;
+    font-style: italic;
+    margin-top: 5px;
+}
+
+.disclaimer-popup .verification-note i {
+    margin-right: 5px;
+}
+
+.disclaimer-popup .disclaimer-note {
+    font-size: 13px;
+    font-style: italic;
+    color: var(--warning-color);
+    opacity: 0.9;
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px dashed var(--border-color);
+}
+
+.disclaimer-popup .disclaimer-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(42, 48, 64, 0.7);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    font-size: 22px;
+    font-weight: normal;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 5;
+}
+
+.disclaimer-popup .disclaimer-close-btn:hover {
+    color: var(--warning-color);
+    background: var(--secondary-bg);
+    transform: scale(1.1);
+    box-shadow: 0 3px 8px rgba(255, 188, 44, 0.3);
+}
+
+.disclaimer-popup .disclaimer-close-btn:active {
+    transform: scale(0.95);
+}
+
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--secondary-bg);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--highlight-color);
+    box-shadow: 0 0 8px rgba(0, 196, 255, 0.5);
+}
+
+::-webkit-scrollbar-corner {
+    background: var(--secondary-bg);
+}
+
+/* Custom Scrollbar for Terminal */
+.terminal::-webkit-scrollbar {
+    width: 6px;
+}
+
+.terminal::-webkit-scrollbar-thumb {
+    background: rgba(0, 196, 255, 0.3);
+}
+
+.terminal::-webkit-scrollbar-thumb:hover {
+    background: var(--highlight-color);
+    box-shadow: 0 0 8px rgba(0, 196, 255, 0.7);
+}
+
+/* Custom Scrollbar for Disclaimer Popup */
+.disclaimer-popup::-webkit-scrollbar {
+    width: 7px;
+}
+
+.disclaimer-popup::-webkit-scrollbar-thumb {
+    background: rgba(255, 188, 44, 0.3);
+}
+
+.disclaimer-popup::-webkit-scrollbar-thumb:hover {
+    background: var(--warning-color);
+    box-shadow: 0 0 8px rgba(255, 188, 44, 0.7);
+}
+
+/* Firefox Scrollbar (more limited styling options) */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) var(--secondary-bg);
+}
+
+.terminal {
+    scrollbar-color: rgba(0, 196, 255, 0.3) var(--secondary-bg);
+}
+
+.disclaimer-popup {
+    scrollbar-color: rgba(255, 188, 44, 0.3) var(--secondary-bg);
+}
+
+/* Responsiveness */
+@media (max-width: 1200px) {
+    .dashboard {
+        grid-template-columns: 1fr 1fr;
+    }
+    .log-terminal {
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .main-header {
+        padding: 8px 10px;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .dashboard {
+        grid-template-columns: 1fr;
+        grid-gap: 10px;
+    }
+
+    .panel {
+        padding: 10px;
+    }
+
+    .panel h2 {
+        font-size: 15px;
+        margin-bottom: 10px;
+        padding-bottom: 8px;
+    }
+    
+    .panel h3 {
+        font-size: 13px;
+    }
+
+    .settings {
+        margin-top: 15px;
+        padding-top: 10px;
+    }
+    .setting-group {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 15px;
+    }
+    .setting-group label {
+        margin-bottom: 5px;
+    }
+    .setting-group input {
+        width: 100%;
+    }
+
+    .prediction-result h3 {
+        font-size: 14px;
+    }
+    .prediction-digits {
+        gap: 10px;
+        min-height: 50px;
+    }
+    .prediction-digit {
+        min-width: 50px;
+        padding: 8px;
+    }
+    .pred-number {
+        font-size: 20px;
+    }
+    .trade-action {
+        flex-direction: column;
+    }
+
+    .log-terminal {
+        height: 200px;
+    }
+    .terminal {
+        font-size: 11px;
+    }
+
+    .login-popup {
+        padding: 20px;
+    }
+
+    .payment-popup {
+        padding: 20px;
+    }
+
+    .admin-link {
+        position: static; /* Reset position on smaller screens */
+        margin-top: 5px;
+        justify-content: center;
+        width: 100%;
+    }
+
+    /* Responsive adjustments for disclaimer popup */
+    .disclaimer-popup {
+        padding: 15px; /* Further reduced padding */
+        width: 90%; /* Maintains consistent width percentage */
+    }
+    .disclaimer-popup h3 {
+        font-size: 16px;
+        gap: 8px; /* Reduced gap */
+        padding-bottom: 8px; /* Adjusted padding */
+        margin-bottom: 15px; /* Adjusted margin */
+    }
+    .disclaimer-popup p {
+        font-size: 13px;
+        margin-bottom: 12px; /* Adjusted margin */
+    }
+    .disclaimer-popup .contact-info-list li {
+        font-size: 13px;
+        gap: 5px; /* Reduced gap */
+        margin-bottom: 6px; /* Adjusted margin */
+    }
+    .disclaimer-popup .disclaimer-note {
+        font-size: 12px; /* Slightly smaller note text */
+        margin-top: 15px; /* Adjusted margin */
+        padding-top: 10px; /* Adjusted padding */
+    }
+    .disclaimer-popup .disclaimer-close-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 18px;
+        top: 10px;
+        right: 10px;
+    }
+    .disclaimer-popup .official-channels {
+        padding: 10px;
+        margin: 15px 0;
+    }
+    .disclaimer-popup .official-channels h4 {
+        font-size: 15px;
+        margin-bottom: 10px;
+    }
+    .disclaimer-popup .channels-intro {
+        font-size: 13px;
+        margin-bottom: 12px;
+    }
+    .disclaimer-popup .social-item {
+        padding: 6px 8px;
+        margin-bottom: 8px;
+        flex-wrap: wrap;
+    }
+    .disclaimer-popup .social-item i {
+        width: 16px;
+        font-size: 16px;
+        margin-right: 8px;
+    }
+    .disclaimer-popup .verification-note {
+        font-size: 12px;
+    }
+
+    ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+    }
+    
+    .terminal::-webkit-scrollbar {
+        width: 4px;
+    }
+    
+    .disclaimer-popup::-webkit-scrollbar {
+        width: 5px;
+    }
+}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - User Management</title>
+    <link rel="stylesheet" href="../css/tools.css"> <!-- Reuse base styles -->
+    <link rel="stylesheet" href="../css/admin.css"> <!-- Admin specific styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <div class="logo">ADMIN<span class="accent">//</span>PANEL</div>
+            <a href="../tools/index.html" class="btn primary"><i class="fas fa-arrow-left"></i> Back to Tool</a>
+        </header>
+
+        <div class="admin-dashboard">
+            <div class="panel user-list-panel">
+                <h2><i class="fas fa-users"></i> Manage Users</h2>
+                <table id="userTable">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- User rows will be added here by JS -->
+                    </tbody>
+                </table>
+                <div id="adminError" class="admin-error"></div>
+            </div>
+
+            <div class="panel add-user-panel">
+                <h2><i class="fas fa-user-plus"></i> Add New User</h2>
+                <form id="addUserForm">
+                    <div class="input-group">
+                        <label for="newUsername"><i class="fas fa-user"></i> Username:</label>
+                        <input type="text" id="newUsername" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="newPassword"><i class="fas fa-key"></i> Password:</label>
+                        <input type="password" id="newPassword" required>
+                    </div>
+                    <button type="submit" class="btn primary"><i class="fas fa-plus"></i> Add User</button>
+                    <div id="addUserError" class="admin-error"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/admin.js"></script>
+</body>
+</html>

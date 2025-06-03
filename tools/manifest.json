@@ -1,0 +1,17 @@
+{
+    "name": "DIGIT//MATCH Signal Tool",
+    "short_name": "SignalTool",
+    "description": "Real-time market signal analysis tool.",
+    "start_url": "/tools",
+    "display": "standalone",
+    "background_color": "#1e2a38",
+    "theme_color": "#2c3e50",
+    "icons": [
+      {
+        "src": "../images/icons/deriv lite logo.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
+  

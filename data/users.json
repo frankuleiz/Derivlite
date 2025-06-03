@@ -1,0 +1,15 @@
+[
+    {
+      "id": 1,
+      "username": "demo_user",
+      "email": "demo@example.com",
+      "placeholder_password_info": "1234"
+    },
+    {
+      "id": 2,
+      "username": "test_analyst",
+      "email": "analyst@example.com",
+      "placeholder_password_info": "Password handling requires a secure backend."
+    }
+  ]
+  
