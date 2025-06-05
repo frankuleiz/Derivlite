@@ -2,9 +2,9 @@ document.addEventListener('DOMContentLoaded', async () => { // Make listener asy
     const userTableBody = document.querySelector('#userTable tbody');
     const adminError = document.getElementById('adminError');
     const allowedAdmins = ['frankuleiz', 'kamunyuz@gmail.com'];
-if (!allowedAdmins.includes(loggedInUser)) {
+    if (!allowedAdmins.includes(loggedInUser)) {
     // Deny access...
-}
+    }
 
 
     // --- Security Check (Basic - Client-Side Only) ---
