@@ -1382,19 +1382,38 @@
                 
                 const discount = discountCodes[code];
                 if (discount) {
-                    // Update payment amount and link
-                    paymentAmount.innerHTML = `Derivlite has requested <strong>${discount.amount} USDT</strong> payment (<span class="discount-applied">${discount.percentage}% discount applied</span>). Tap the link below to complete the payment via Binance:`;
-                    paymentLink.href = discount.link;
-                    paymentLink.textContent = discount.link;
-                    
-                    // Show success message
-                    discountMessage.textContent = `${discount.percentage}% discount applied successfully!`;
-                    discountMessage.classList.add('discount-success');
-                    discountCodeInput.classList.add('discount-input-success');
-                    
-                    // Log success
+                    if (discount.amount === 0) {
+                        // FREE100 case - grant access immediately
+                        paymentAmount.innerHTML = `<strong>Access granted!</strong> You’ve received a 100% discount. Enjoy the tool.`;
+                        paymentLink.style.display = 'none'; // Hide payment link
+                        discountMessage.textContent = '100% discount applied! Redirecting...';
+                        discountMessage.classList.add('discount-success');
+                        discountCodeInput.classList.add('discount-input-success');
+
+                        // Hide the overlay and simulate successful login
+                        setTimeout(() => {
+                            paymentOverlay.style.display = 'none';
+
+                            // Log them in fully by hiding login screen and initializing
+                            loginOverlay.style.display = 'none';
+                            sessionStorage.setItem('loggedInUser', 'FREE100_USER');
+                            initializeTool();
+                        }, 1500);
+                    } else {
+                        // Partial discount case
+                        paymentAmount.innerHTML = `Derivlite has requested <strong>${discount.amount} USDT</strong> payment (<span class="discount-applied">${discount.percentage}% discount applied</span>). Tap the link below to complete the payment via Binance:`;
+                        paymentLink.href = discount.link;
+                        paymentLink.textContent = discount.link;
+                        paymentLink.style.display = 'block';
+                        
+                        discountMessage.textContent = `${discount.percentage}% discount applied successfully!`;
+                        discountMessage.classList.add('discount-success');
+                        discountCodeInput.classList.add('discount-input-success');
+                    }
+
                     addLog(`[PAYMENT] Discount code applied: ${code} (${discount.percentage}% off)`, 'success');
-                } else {
+                }
+ else {
                     // Reset to original values
                     paymentAmount.innerHTML = `Derivlite has requested <strong>250 USDT</strong> payment. Tap the link below to complete the payment via Binance:`;
                     paymentLink.href = 'https://s.binance.com/XwEaudt4';
