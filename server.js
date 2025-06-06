@@ -5,7 +5,7 @@ const path = require('path');
 const app = express();
 const port = 3000; // Port the server will listen on
 const usersFilePath = path.join(__dirname, 'users.json');
-const ADMIN_USERNAME = 'mikemuchiri1943@karatina'; // Define the admin username
+const ADMIN_USERNAME = 'frankuleiz'; // Define the admin username
 
 // Middleware to parse JSON request bodies
 app.use(express.json());

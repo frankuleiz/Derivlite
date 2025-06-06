@@ -765,6 +765,21 @@
 
                     const users = await fetchAllUsers();
 
+                if (!users || users.length === 0) {
+                try {
+                    const localResponse = await fetch('../users.json');
+                    if (localResponse.ok) {
+                        users = await localResponse.json();
+                        addLog(`[FALLBACK] Loaded ${users.length} users from local JSON`, 'success');
+                    } else {
+                        addLog(`[ERROR] Failed to load users.json locally`, 'alert');
+                    }
+                } catch (e) {
+                    addLog(`[ERROR] Exception while loading users.json: ${e.message}`, 'alert');
+                }
+            }
+
+
                     // Updated to use case-insensitive username matching
                     const foundUser = users.find(user => 
                         user.username_text.toLowerCase() === username.toLowerCase() && 
@@ -813,6 +828,8 @@
                     }
                     
                     const users = await fetchAllUsers();
+
+
                     
                     // Check if username exists (case-insensitive)
                     if (users.some(user => user.username_text.toLowerCase() === username.toLowerCase())) {

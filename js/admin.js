@@ -1,14 +1,15 @@
 document.addEventListener('DOMContentLoaded', async () => { // Make listener async
     const userTableBody = document.querySelector('#userTable tbody');
     const adminError = document.getElementById('adminError');
+    const loggedInUser = sessionStorage.getItem('loggedInUser');
     const allowedAdmins = ['frankuleiz', 'kamunyuz@gmail.com'];
     if (!allowedAdmins.includes(loggedInUser)) {
     // Deny access...
-    }
+    }}
 
 
     // --- Security Check (Basic - Client-Side Only) ---
-    const loggedInUser = sessionStorage.getItem('loggedInUser');
+    
     if (loggedInUser !== 'frankuleiz') {
         document.body.innerHTML = `
             <div class="container" style="text-align: center; padding-top: 50px;">
