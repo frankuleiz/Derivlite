@@ -1,0 +1,9 @@
+{
+  "name": "DIGIT//MATCH - Market Signal Tool",
+  "short_name": "DigitMatch",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#2c3e50",
+  "theme_color": "#2c3e50",
+  "icons": []
+}
