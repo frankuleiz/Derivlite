@@ -345,8 +345,7 @@ body {
 }
 
 /* Prediction panel */
-.prediction-panel {
-}
+/* Removed empty ruleset for .prediction-panel */
 
 .prediction-result h3 {
     text-align: center;
@@ -996,8 +995,7 @@ body::after {
     .dashboard {
         grid-template-columns: 1fr 1fr;
     }
-    .log-terminal {
-    }
+    /* Removed empty ruleset for .log-terminal */
 }
 
 @media (max-width: 768px) {
