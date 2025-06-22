@@ -3,14 +3,18 @@ const fs = require('fs').promises; // Use promise-based fs
 const path = require('path');
 
 const app = express();
-const port = 3000; // Port the server will listen on
+const port = process.env.PORT || 3000; // Port the server will listen on
 const usersFilePath = path.join(__dirname, 'users.json');
 const ADMIN_USERNAME = 'frankuleiz'; // Define the admin username
 const cors = require('cors');
 
 app.use(cors({
-  origin: 'https://derivlite.vercel.app' // allow only your frontend
+  origin: 'https://derivlite.vercel.app',
+  methods: ['GET', 'POST', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'x-request-user'],
+  credentials: true
 }));
+
 
 
 // Middleware to parse JSON request bodies
@@ -145,7 +149,7 @@ app.use('/api/*', (req, res) => {
 
 // --- Start Server ---
 app.listen(port, () => {
-    console.log(`Server listening at https://derivlite.onrender.com:${port}`);
+    console.log(`Server listening at ${port}`);
     console.log('Serving static files from:', __dirname);
     console.warn('--- SECURITY WARNING ---');
     console.warn('The current authentication check (isAdmin) is NOT secure and only for demonstration.');
