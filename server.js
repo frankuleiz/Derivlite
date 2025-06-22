@@ -6,6 +6,12 @@ const app = express();
 const port = 3000; // Port the server will listen on
 const usersFilePath = path.join(__dirname, 'users.json');
 const ADMIN_USERNAME = 'frankuleiz'; // Define the admin username
+const cors = require('cors');
+
+app.use(cors({
+  origin: 'https://derivlite.vercel.app' // allow only your frontend
+}));
+
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
