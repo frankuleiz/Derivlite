@@ -139,7 +139,7 @@ app.use('/api/*', (req, res) => {
 
 // --- Start Server ---
 app.listen(port, () => {
-    console.log(`Server listening at http://localhost:${port}`);
+    console.log(`Server listening at https://derivlite.onrender.com:${port}`);
     console.log('Serving static files from:', __dirname);
     console.warn('--- SECURITY WARNING ---');
     console.warn('The current authentication check (isAdmin) is NOT secure and only for demonstration.');
