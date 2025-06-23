@@ -739,208 +739,86 @@
             });
 
             // Check login function - Updated for case-insensitive username matching
-            async function checkLogin(username, password) {
-                try {
-                    // Fix the API URL (removing the space and using correct endpoint)
-                    const apiUrl = 'https://derivlite-api.onrender.com/api/login';
-                    
-                    const response = await fetch(apiUrl);
+            const BASE_API = 'https://derivlite-api.onrender.com';
 
-                    if (!response.ok) {
-                        let errorBody = "Could not retrieve error body.";
-                        try {
-                            errorBody = await response.text();
-                        } catch (e) { /* ignore */ }
-                        console.error(`API error! status: ${response.status}, body: ${errorBody}`);
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    const data = await response.json();
-
-                    // Log the API response for debugging
-                    console.log('API Response:', data);
-
-                    if (!data.response || !data.response.results) {
-                        console.error("Unexpected API response structure:", data);
-                        loginError.textContent = 'Login system error (API response format).';
-                        return null;
-                    }
-
-                    const users = await fetchAllUsers();
-
-                if (!users || users.length === 0) {
-                try {
-                    const localResponse = await fetch('../users.json');
-                    if (localResponse.ok) {
-                        users = await localResponse.json();
-                        addLog(`[FALLBACK] Loaded ${users.length} users from local JSON`, 'success');
-                    } else {
-                        addLog(`[ERROR] Failed to load users.json locally`, 'alert');
-                    }
-                } catch (e) {
-                    addLog(`[ERROR] Exception while loading users.json: ${e.message}`, 'alert');
+            async function fetchAllUsers() {
+            try {
+                const response = await fetch(`${BASE_API}/api/users`);
+                const data = await response.json();
+                if (!Array.isArray(data)) {
+                console.error("Unexpected API response structure:", data);
+                return [];
                 }
+                return data;
+            } catch (err) {
+                console.error('Error fetching users from API:', err);
+                return [];
+            }
             }
 
-
-                    // Updated to use case-insensitive username matching
-                    const foundUser = users.find(user => 
-                        user.username_text.toLowerCase() === username.toLowerCase() && 
-                        user.password_text === password
-                    );
-
-                    // Return the user object if found, otherwise null
-                    return foundUser ? {
-                        username: foundUser.username_text,
-                        role: foundUser.role || 'user',
-                        email: foundUser.email_text || '',
-                        inactive: foundUser.active_boolean === false,
-                        unique_id_text: foundUser.unique_id_text || null
-                    } : null;
-                    
-                } catch (error) {
-                    console.error("Error checking login credentials via API:", error);
-                    loginError.textContent = 'Login system error. Please try again later.';
-                    return null;
-                }
-            }
-
-            // Function to generate unique 12-digit ID
-            function generateUniqueId() {
-                const timestamp = new Date().getTime().toString().slice(-10);
-                const random = Math.floor(Math.random() * 100).toString().padStart(2, '0');
-                return timestamp + random;
-            }
-
-            // Register new user function - Updated for case-insensitive username checking
             async function registerUser(username, email, password, uniqueId) {
-                try {
-                    // First check if the username or email already exists using the login API
-                    const apiUrl = 'https://derivlite-api.onrender.com/api/users';
-                    const response = await fetch(apiUrl);
-                    
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    
-                    const data = await response.json();
-                    
-                    if (!data.response || !data.response.results) {
-                        console.error("Unexpected API response structure:", data);
-                        return { success: false, message: 'Registration system error (API response format).' };
-                    }
-                    
-                    const users = await fetchAllUsers();
-
-
-                    
-                    // Check if username exists (case-insensitive)
-                    if (users.some(user => user.username_text.toLowerCase() === username.toLowerCase())) {
-                        return { success: false, message: 'Username already exists' };
-                    }
-                    
-                    // Check if email exists
-                    if (users.some(user => user.email_text.toLowerCase() === email.toLowerCase())) {
-                        return { success: false, message: 'Email already in use' };
-                    }
-                    
-                    addLog(`[SYSTEM] Initializing account for ${username}...`);
-                    
-                    try {
-                        const apiResponse = await fetch('https://derivlite-api.onrender.com/api/register',  {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                username: username,
-                                email: email,
-                                password: password,
-                                unique_id: uniqueId,
-                                registration_source: 'web_app',
-                                registration_time: new Date().toISOString()
-                            })
-                        });
-                        
-                        if (apiResponse.ok) {
-                            const apiData = await apiResponse.json();
-                            addLog(`[SYSTEM] Account initialization successful for ${username}`, 'success');
-                            
-                            return { 
-                                success: true, 
-                                user: { 
-                                    username, 
-                                    email, 
-                                    role: 'user',
-                                    api_response: apiData
-                                } 
-                            };
-                        } else {
-                            const errorData = await apiResponse.json().catch(() => ({}));
-                            addLog(`[ERROR] Account initialization failed: ${apiResponse.status} ${apiResponse.statusText}`, 'alert');
-                            return { 
-                                success: false, 
-                                message: errorData.message || `API error: ${apiResponse.status} ${apiResponse.statusText}` 
-                            };
-                        }
-                    } catch (apiError) {
-                        addLog(`[ERROR] Cannot reach registration API: ${apiError.message}`, 'alert');
-                        
-                        // Fallback to local validation if API registration fails
-                        try {
-                            const localResponse = await fetch('../users.json');
-                            if (localResponse.ok) {
-                                const localUsers = await localResponse.json();
-                                
-                                if (localUsers.some(user => user.username.toLowerCase() === username.toLowerCase())) {
-                                    return { success: false, message: 'Username already exists (local check)' };
-                                }
-                                
-                                if (localUsers.some(user => user.email.toLowerCase() === email.toLowerCase())) {
-                                    return { success: false, message: 'Email already in use (local check)' };
-                                }
-                            }
-                        } catch (localError) {
-                            console.error("Local validation also failed:", localError);
-                        }
-                        
-                        return { 
-                            success: true, 
-                            user: { 
-                                username, 
-                                email, 
-                                role: 'user' 
-                            },
-                            warning: 'Account was created locally but server synchronization failed. Some features may be limited.'
-                        };
-                    }
-                } catch (error) {
-                    console.error("Error during registration:", error);
-                    
-                    // Fallback to local file check if API fails completely
-                    try {
-                        const response = await fetch('../users.json');
-                        if (response.ok) {
-                            const users = await response.json();
-                            
-                            if (users.some(user => user.username.toLowerCase() === username.toLowerCase())) {
-                                return { success: false, message: 'Username already exists' };
-                            }
-                            
-                            if (users.some(user => user.email.toLowerCase() === email.toLowerCase())) {
-                                return { success: false, message: 'Email already in use' };
-                            }
-                        }
-                    } catch (fallbackError) {
-                        console.error("Fallback validation failed:", fallbackError);
-                    }
-                    
-                    return { success: false, message: 'Registration system error. Please try again later.' };
+            try {
+                const users = await fetchAllUsers();
+                if (users.some(user => user.username?.toLowerCase() === username.toLowerCase())) {
+                return { success: false, message: 'Username already exists' };
                 }
+                if (users.some(user => user.email?.toLowerCase() === email.toLowerCase())) {
+                return { success: false, message: 'Email already in use' };
+                }
+                const apiResponse = await fetch(`${BASE_API}/api/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    username,
+                    email,
+                    password,
+                    unique_id: uniqueId,
+                    registration_source: 'web_app',
+                    registration_time: new Date().toISOString()
+                })
+                });
+                if (!apiResponse.ok) {
+                const err = await apiResponse.json().catch(() => ({}));
+                return { success: false, message: err.message || 'Registration failed' };
+                }
+                const newUser = await apiResponse.json();
+                return { success: true, user: newUser };
+            } catch (error) {
+                console.error("Error during registration:", error);
+                return { success: false, message: 'Registration system error. Please try again later.' };
+            }
             }
 
-            // Register form submission
-            registerForm.addEventListener('submit', async function(event) {
-                event.preventDefault();
+            async function checkLogin(username, password) {
+            try {
+                const response = await fetch(`${BASE_API}/api/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+                });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.message || 'Login failed');
+                return data;
+            } catch (error) {
+                console.error('Login error:', error);
+                return null;
+            }
+            }
+
+            function generateUniqueId() {
+            const timestamp = new Date().getTime().toString().slice(-10);
+            const random = Math.floor(Math.random() * 100).toString().padStart(2, '0');
+            return timestamp + random;
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+            const registerForm = document.getElementById('registerForm');
+            const loginForm = document.getElementById('loginForm');
+            const registerError = document.getElementById('registerError');
+            const loginError = document.getElementById('loginError');
+
+            registerForm?.addEventListener('submit', async (e) => {
+                e.preventDefault();
                 const username = document.getElementById('regUsername').value.trim();
                 const email = document.getElementById('regEmail').value.trim();
                 const password = document.getElementById('regPassword').value;
@@ -948,201 +826,34 @@
                 registerError.textContent = '';
 
                 if (password !== confirmPassword) {
-                    registerError.textContent = 'Passwords do not match.';
-                    return;
+                registerError.textContent = 'Passwords do not match';
+                return;
                 }
 
-                if (password.length < 6) {
-                    registerError.textContent = 'Password must be at least 6 characters.';
-                    return;
-                }
-
-                // Generate unique ID and store in localStorage with username as part of key
                 const uniqueId = generateUniqueId();
-                const uniqueIdKey = 'userUniqueId_' + username.toLowerCase();
-                localStorage.setItem(uniqueIdKey, uniqueId);
-                
-                addLog(`[SYSTEM] Generated unique ID for registration: ${uniqueId} (stored as ${uniqueIdKey})`);
-
-                const registerButton = this.querySelector('.btn-register');
-                const originalButtonText = registerButton.innerHTML;
-                registerButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
-                registerButton.disabled = true;
-
-                const registerResult = await registerUser(username, email, password, uniqueId);
-
-                registerButton.innerHTML = originalButtonText;
-                registerButton.disabled = false;
-
-                if (registerResult.success) {
-                    registerError.textContent = 'Account created successfully! You can now log in.';
-                    registerError.style.color = '#2ecc71';
-                    
-                    if (registerResult.warning) {
-                        setTimeout(() => {
-                            addLog(`[WARN] ${registerResult.warning}`, 'alert');
-                        }, 1000);
-                    }
-                    
-                    document.getElementById('regUsername').value = '';
-                    document.getElementById('regEmail').value = '';
-                    document.getElementById('regPassword').value = '';
-                    document.getElementById('regConfirmPassword').value = '';
-                    
-                    setTimeout(() => {
-                        loginTabBtn.click();
-                        registerError.textContent = '';
-                        registerError.style.color = '#e74c3c';
-                    }, 2000);
+                localStorage.setItem('userUniqueId_' + username.toLowerCase(), uniqueId);
+                const result = await registerUser(username, email, password, uniqueId);
+                if (result.success) {
+                registerError.textContent = 'Registration successful. Please login.';
                 } else {
-                    registerError.textContent = registerResult.message || 'Registration failed. Please try again.';
+                registerError.textContent = result.message;
                 }
             });
 
-            // Login form submission - MODIFIED to handle username-specific unique IDs
-            loginForm.addEventListener('submit', async function(event) {
-                event.preventDefault();
+            loginForm?.addEventListener('submit', async (e) => {
+                e.preventDefault();
                 const username = document.getElementById('username').value.trim();
                 const password = document.getElementById('password').value;
                 loginError.textContent = '';
-
-                const loginResult = await checkLogin(username, password);
-
-                if (loginResult) {
-                    // Check if account is inactive
-                    if (loginResult.inactive) {
-                        // Update the payment popup content for inactive accounts
-                        const paymentTitle = paymentOverlay.querySelector('h3');
-                        const paymentText = paymentOverlay.querySelectorAll('p');
-                        
-                        paymentTitle.innerHTML = '<i class="fab fa-bitcoin"></i> Account Activation Required';
-                        paymentText[0].innerHTML = `Your account <strong>${loginResult.username}</strong> requires activation. Complete the payment of <strong>250 USDT</strong> to activate your access:`;
-                        paymentText[1].innerHTML = 'After payment, your account will be activated automatically or contact support for discount at +254714653438.';
-                        
-                        // Show the payment popup directly
-                        paymentOverlay.style.display = 'flex';
-                        
-                        // Show a message in the login form as well
-                        loginError.textContent = 'Your account requires activation. Please make a payment to continue.';
-                        loginError.style.color = '#ff9800';
-                        
-                        // Log the inactive account attempt
-                        addLog(`[ACCESS] Login attempt by inactive account: ${loginResult.username}`, 'alert');
-                    } 
-                    // Check if unique_id_text exists in the user record and in localStorage
-                    else if (loginResult.unique_id_text) {
-                        // Check for username-specific unique ID first
-                        const uniqueIdKey = 'userUniqueId_' + username.toLowerCase();
-                        let storedUniqueId = localStorage.getItem(uniqueIdKey);
-                        
-                        // Fallback: Check legacy format (for backward compatibility)
-                        if (!storedUniqueId) {
-                            storedUniqueId = localStorage.getItem('userUniqueId');
-                            
-                            // If found in old format, migrate to new format
-                            if (storedUniqueId && storedUniqueId === loginResult.unique_id_text) {
-                                localStorage.setItem(uniqueIdKey, storedUniqueId);
-                                addLog(`[SYSTEM] Migrated legacy unique ID to username-specific storage for ${username}`);
-                            }
-                        }
-                        
-                        // Just check if IDs match, no editing
-                        if (storedUniqueId !== loginResult.unique_id_text) {
-                            // Update the payment popup content for device restriction error
-                            const paymentTitle = paymentOverlay.querySelector('h3');
-                            const paymentText = paymentOverlay.querySelectorAll('p');
-                            const paymentLink = paymentOverlay.querySelector('.payment-link');
-                            
-                            paymentTitle.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Device Restriction';
-                            paymentText[0].innerHTML = `Your account <strong>${loginResult.username}</strong> is already in use on another device.`;
-                            
-                            // Hide the payment link for device restriction errors
-                            paymentLink.style.display = 'none';
-                            
-                            paymentText[1].innerHTML = 'Please use the same device you used to create this account to access this tool. Each account is restricted to a single device for security reasons.';
-                            
-                            // Show the payment popup directly
-                            paymentOverlay.style.display = 'flex';
-                            
-                            // Add an error in the login form as well
-                            loginError.textContent = 'This account is already in use in another device.';
-                            loginError.style.color = '#ff5252';
-                            
-                            // Log the access attempt
-                            addLog(`[ACCESS] Login attempt from unauthorized device for account: ${loginResult.username}`, 'alert');
-                            return;
-                        }
-                        
-                        // Active account with valid device - proceed with login
-                        loginOverlay.style.display = 'none';
-                        sessionStorage.setItem('loggedInUser', loginResult.username);
-
-                        if (loginResult.role === 'admin') {
-                            adminLink.style.display = 'inline-flex';
-                            adminLink.href = '../admin/admin.html';
-                        } else {
-                            adminLink.style.display = 'none';
-                        }
-
-                        initializeTool();
-                    } 
-                    else {
-                        // Legacy account without unique_id_text - proceed with login
-                        loginOverlay.style.display = 'none';
-                        sessionStorage.setItem('loggedInUser', loginResult.username);
-
-                        if (loginResult.role === 'admin') {
-                            adminLink.style.display = 'inline-flex';
-                            adminLink.href = '../admin/admin.html';
-                        } else {
-                            adminLink.style.display = 'none';
-                        }
-
-                        initializeTool();
-                    }
+                const result = await checkLogin(username, password);
+                if (!result) {
+                loginError.textContent = 'Login failed. Check credentials or try again later.';
                 } else {
-                    loginError.textContent = 'Invalid username or password.';
-                    document.getElementById('password').value = '';
-                    document.getElementById('username').focus();
-                    sessionStorage.removeItem('loggedInUser');
-                    adminLink.style.display = 'none';
+                sessionStorage.setItem('loggedInUser', result.username);
+                loginError.textContent = `Welcome ${result.username}`;
                 }
             });
-
-            const emailInput = document.getElementById('regEmail');
-            const usernameInput = document.getElementById('regUsername');
-
-            if (emailInput && usernameInput) {
-                // Apply username styling to email input
-                emailInput.className = usernameInput.className;
-                emailInput.style.cssText = usernameInput.style.cssText;
-                
-                // Keep the email type as "email" for validation but style it like username
-                emailInput.setAttribute('autocomplete', 'email');
-                emailInput.setAttribute('spellcheck', 'false');
-                
-                // Remove placeholder to match username field
-                emailInput.removeAttribute('placeholder');
-
-                // Email validation on input
-                emailInput.addEventListener('input', function() {
-                    this.value = this.value.replace(/\s+/g, '');
-                });
-                
-                // Add email validation on form submission
-                registerForm.addEventListener('submit', function(event) {
-                    const email = emailInput.value.trim();
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    
-                    if (!emailRegex.test(email)) {
-                        event.preventDefault();
-                        registerError.textContent = 'Please enter a valid email address.';
-                        emailInput.focus();
-                        return false;
-                    }
-                    // Continue with the existing form submission
-                }, true);
-            }
+            });
 
             function initializeTool() {
                 const logMessages = [
