@@ -8,7 +8,7 @@ const app = express();
 const port = process.env.PORT || 3000; // Use dynamic port for Render
 const usersFilePath = path.join(__dirname, 'users.json');
 const ADMIN_USERNAME = 'frankuleiz';
-const users = JSON.parse(fs.readFileSync('users.json', 'utf8'));
+
 
 // Enable full CORS for frontend on Vercel
 app.use(cors({
