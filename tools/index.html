@@ -628,8 +628,8 @@
         ];
 
          // API Configuration
-        const BASE_API = 'https://derivlite-api.onrender.com';
-        
+        const BASE_API = 'https://derivlite.onrender.com';
+
         // Move these variables to global scope so they're accessible to all functions
         let analysisRunning = false;
         let logInterval;
@@ -743,20 +743,48 @@
 
             // Check login function - Updated for case-insensitive username matching
             async function checkLogin(username, password) {
-                try {
-                    const response = await fetch(`${BASE_API}/api/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password })
-                    });
-                    const data = await response.json();
-                    if (!response.ok) throw new Error(data.message || 'Login failed');
-                    return data;
-                } catch (error) {
-                    console.error('Login error:', error);
-                    return null;
-                }
+        try {
+            const response = await fetch(`${BASE_API}/api/login`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    username: username.trim(),
+                    password: password
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({
+                    message: `HTTP error! status: ${response.status}`
+                }));
+                throw new Error(errorData.message || 'Login failed');
             }
+
+            const data = await response.json();
+            
+            // Validate response structure
+            if (!data || typeof data !== 'object') {
+                throw new Error('Invalid API response format');
+            }
+
+            return {
+                username: data.username || username,
+                role: data.role || 'user',
+                email: data.email || '',
+                inactive: data.active === false,
+                unique_id: data.unique_id || null,
+                api_response: data
+            };
+
+        } catch (error) {
+            console.error("Login Error:", error);
+            addLog(`[ERROR] Login system error: ${error.message}`, 'alert');
+            return null;
+        }
+    }
             // Function to generate unique 12-digit ID
             function generateUniqueId() {
                 const timestamp = new Date().getTime().toString().slice(-10);
