@@ -55,6 +55,18 @@ function isAdmin(req, res, next) {
 }
 
 // --- API Routes ---
+app.post('/api/login', (req, res) => {
+    const { username, password } = req.body;
+    const user = users.find(u => u.username === username && u.password === password);
+
+    if (user) {
+        res.json({ success: true, message: "Login successful" });
+    } else {
+        res.status(401).json({ success: false, message: "Invalid credentials" });
+    }
+});
+
+
 app.get('/api/users', async (req, res) => {
     console.log(`[${new Date().toISOString()}] Received GET /api/users`);
     try {
