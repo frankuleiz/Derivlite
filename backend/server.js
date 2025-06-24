@@ -56,6 +56,28 @@ function isAdmin(req, res, next) {
 }
 
 // --- API Routes ---
+
+// Register Route
+app.post('/api/register', (req, res) => {
+    const { username, password } = req.body;
+
+    const existingUser = users.find(u => u.username === username);
+    if (existingUser) {
+        return res.status(409).json({ success: false, message: "User already exists" });
+    }
+
+    const newUser = { username, password };
+    users.push(newUser);
+
+    try {
+        fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
+        res.status(201).json({ success: true, message: "User registered successfully" });
+    } catch (err) {
+        console.error("Failed to save new user:", err);
+        res.status(500).json({ success: false, message: "Internal server error" });
+    }
+});
+
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
     const user = users.find(u => u.username === username && u.password === password);
