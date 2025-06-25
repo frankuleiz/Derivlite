@@ -1,16 +1,14 @@
-// Updated server.js for Render Deployment
+
 const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
 const cors = require('cors');
 
 const app = express();
-const port = process.env.PORT || 3000; // Use dynamic port for Render
+const port = process.env.PORT || 3000;
 const usersFilePath = path.join(__dirname, 'users.json');
 const ADMIN_USERNAME = 'frankuleiz';
 
-
-// Enable full CORS for frontend on Vercel
 app.use(cors({
   origin: 'https://derivlite.vercel.app',
   methods: ['GET', 'POST', 'DELETE'],
@@ -18,10 +16,8 @@ app.use(cors({
   credentials: true
 }));
 
-// Middleware to parse JSON request bodies
 app.use(express.json());
 
-// --- Helper Functions ---
 async function readUsers() {
     try {
         const data = await fs.readFile(usersFilePath, 'utf8');
@@ -55,40 +51,44 @@ function isAdmin(req, res, next) {
     }
 }
 
-// --- API Routes ---
-
-// Register Route
-app.post('/api/register', (req, res) => {
+app.post('/api/register', async (req, res) => {
     const { username, password } = req.body;
 
-    const existingUser = users.find(u => u.username === username);
-    if (existingUser) {
-        return res.status(409).json({ success: false, message: "User already exists" });
-    }
-
-    const newUser = { username, password };
-    users.push(newUser);
-
     try {
-        fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
+        const users = await readUsers();
+        const existingUser = users.find(u => u.username === username);
+        if (existingUser) {
+            return res.status(409).json({ success: false, message: "User already exists" });
+        }
+
+        const newUser = { username, password };
+        users.push(newUser);
+        await writeUsers(users);
+
         res.status(201).json({ success: true, message: "User registered successfully" });
-    } catch (err) {
-        console.error("Failed to save new user:", err);
+    } catch (error) {
+        console.error("Error in /api/register:", error);
         res.status(500).json({ success: false, message: "Internal server error" });
     }
 });
 
-app.post('/api/login', (req, res) => {
+app.post('/api/login', async (req, res) => {
     const { username, password } = req.body;
-    const user = users.find(u => u.username === username && u.password === password);
 
-    if (user) {
-        res.json({ success: true, message: "Login successful" });
-    } else {
-        res.status(401).json({ success: false, message: "Invalid credentials" });
+    try {
+        const users = await readUsers();
+        const user = users.find(u => u.username === username && u.password === password);
+
+        if (user) {
+            res.json({ success: true, message: "Login successful" });
+        } else {
+            res.status(401).json({ success: false, message: "Invalid credentials" });
+        }
+    } catch (error) {
+        console.error("Error in /api/login:", error);
+        res.status(500).json({ success: false, message: "Internal server error" });
     }
 });
-
 
 app.get('/api/users', async (req, res) => {
     console.log(`[${new Date().toISOString()}] Received GET /api/users`);
@@ -144,19 +144,16 @@ app.delete('/api/users/:username', isAdmin, async (req, res) => {
     }
 });
 
-// --- Serve Static Files ---
 console.log(`Serving static files from root: ${__dirname}`);
 app.use(express.static(path.join(__dirname)));
 app.use('/admin', express.static(path.join(__dirname, 'admin')));
 app.use('/tools', express.static(path.join(__dirname, 'tools')));
 
-// --- Catch-all 404 Handler ---
 app.use('/api/*', (req, res) => {
     console.log(`[${new Date().toISOString()}] 404 Not Found for API route: ${req.originalUrl}`);
     res.status(404).json({ message: `API endpoint not found: ${req.originalUrl}` });
 });
 
-// --- Start Server ---
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
     console.log('Serving static files from:', __dirname);
