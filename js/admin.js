@@ -33,25 +33,25 @@ document.addEventListener('DOMContentLoaded', async () => { // Make listener asy
 
     // Fetch users from users.json
     async function getUsers() {
-        adminError.textContent = ''; // Clear previous errors
         try {
-            const response = await fetch('https://derivlite.onrender.com/api/users');
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+          const response = await fetch('/api/users', {
+            headers: {
+              'x-request-user': 'frankuleiz' // simulate admin auth
             }
-            const users = await response.json();
-            if (!users || users.length === 0) {
-                 adminError.textContent = "No users found in users.json or the file is empty.";
-                 return [];
-            }
-            return users;
-        } catch (e) {
-            console.error("Error fetching users from users.json", e);
-            adminError.textContent = "Failed to load user data from users.json. Check console for details.";
-            return []; // Return empty array on error
+          });
+      
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+      
+          const users = await response.json();
+          return users;
+        } catch (error) {
+          console.error('Error fetching users from API:', error);
+          return [];
         }
-    }
-
+      }
+      
     // Render user table (now read-only)
     async function renderUsers() {
         const users = await getUsers(); // Fetch users asynchronously
