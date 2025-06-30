@@ -8,10 +8,7 @@ const port = process.env.PORT || 3000;
 const ADMIN_USERNAME = 'frankuleiz';
 
 // === MongoDB Connection ===
-mongoose.connect(process.env.MONGO_URI || 'mongodb+srv://admin:Fr@nk2025@derivlite.gmcal7d.mongodb.net/?retryWrites=true&w=majority&appName=derivlite', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(process.env.MONGO_URI || 'mongodb+srv://admin:Fr@nk2025@derivlite.gmcal7d.mongodb.net/?retryWrites=true&w=majority&appName=derivlite')
 .then(() => console.log('✅ Connected to MongoDB'))
 .catch(err => console.error('❌ MongoDB connection error:', err));
 
@@ -89,16 +86,16 @@ app.post('/api/register', async (req, res) => {
 
     const newUser = new User({
       username,
-      email,
       password,
-      uniqueId: unique_id,
+      email,
+      uniqueId: unique_id, // match schema
       source: registration_source || 'web_app',
       createdBy: 'non_authenticated_user_blueprint26_live',
-      createdDate: new Date(registration_time),
+      createdDate: new Date(registration_time), // match schema
       modifiedDate: new Date(),
-      role: username === ADMIN_USERNAME ? 'admin' : 'user'
+      role: username === 'frankuleiz' ? 'admin' : 'user'
     });
-
+    
     await newUser.save();
 
     return res.status(201).json({
