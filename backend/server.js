@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000;
 const ADMIN_USERNAME = 'frankuleiz';
 
 // === MongoDB Connection ===
-mongoose.connect(process.env.MONGO_URI || 'mongodb+srv://admin:Frank2025@derivlite.gmcal7d.mongodb.net/?retryWrites=true&w=majority&appName=derivlite')
+mongoose.connect(process.env.MONGO_URI || 'mongodb+srv://admin:9uP83iLCo97iliqR@derivlite.gmcal7d.mongodb.net/?retryWrites=true&w=majority&appName=derivlite')
 .then(() => console.log('✅ Connected to MongoDB'))
 .catch(err => console.error('❌ MongoDB connection error:', err));
 
