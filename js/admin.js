@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', async () => { // Make listener asy
     const adminError = document.getElementById('adminError');
     const loggedInUser = sessionStorage.getItem('loggedInUser');
     const allowedAdmins = ['frankuleiz', 'kamunyuz@gmail.com'];
+    const BASE_API = 'https://derivlite.onrender.com';
+
     if (!allowedAdmins.includes(loggedInUser)) {
     // Deny access...
     }
@@ -31,27 +33,27 @@ document.addEventListener('DOMContentLoaded', async () => { // Make listener asy
     }
     // --- End Security Check ---
 
-    // Fetch users from users.json
+    // Fetch users
     async function getUsers() {
-        try {
-          const response = await fetch('/api/users', {
-            headers: {
-              'x-request-user': 'frankuleiz' // simulate admin auth
-            }
-          });
-      
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-      
-          const users = await response.json();
-          return users;
-        } catch (error) {
-          console.error('Error fetching users from API:', error);
-          return [];
+    try {
+        const response = await fetch(`${BASE_API}/api/users`, {
+        headers: {
+            'x-request-user': 'frankuleiz'
         }
-      }
-      
+        });
+
+        if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const users = await response.json();
+        return users;
+    } catch (error) {
+        console.error('Error fetching users from API:', error);
+        return [];
+    }
+    }
+     
     // Render user table (now read-only)
     async function renderUsers() {
         const users = await getUsers(); // Fetch users asynchronously
