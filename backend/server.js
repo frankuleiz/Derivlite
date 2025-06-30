@@ -52,6 +52,20 @@ function isAdmin(req, res, next) {
 
 // === Routes ===
 
+// Test database connection
+app.get('/api/test-db', async (req, res) => {
+  try {
+      const users = await User.find().limit(5); // get first 5 users
+      res.json({
+          message: '✅ Database connection works',
+          userSample: users
+      });
+  } catch (err) {
+      console.error('❌ Test DB query failed:', err);
+      res.status(500).json({ message: 'Database test failed', error: err.message });
+  }
+});
+
 // Register new user
 app.post('/api/register', async (req, res) => {
   const {
