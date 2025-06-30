@@ -636,7 +636,6 @@
         let fastLogInterval;
         let tickInterval;
         let predictionTimer = null;
-        let marketStates = new Map(); // Stores { history: [], latestTickTime: 0, maxDecimals: 0 }
         let subscribedMarkets = new Set(); // Add subscription tracking
         let signalLockUntil = 0; // Timestamp when next signal can be shown
         let countdownInterval = null;
