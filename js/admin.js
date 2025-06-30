@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => { // Make listener asy
     async function getUsers() {
         adminError.textContent = ''; // Clear previous errors
         try {
-            const response = await fetch('../users.json');
+            const response = await fetch('https://derivlite.onrender.com/api/users');
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
