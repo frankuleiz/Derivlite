@@ -795,36 +795,32 @@
             // Register new user function - Updated for case-insensitive username checking
             async function registerUser(username, email, password, uniqueId) {
                 try {
-                    const users = await fetchAllUsers();
-                    if (users.some(user => user.username?.toLowerCase() === username.toLowerCase())) {
-                    return { success: false, message: 'Username already exists' };
-                    }
-                    if (users.some(user => user.email?.toLowerCase() === email.toLowerCase())) {
-                    return { success: false, message: 'Email already in use' };
-                    }
-                    const apiResponse = await fetch(`${BASE_API}/api/register`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        username,
-                        email,
-                        password,
-                        unique_id: uniqueId,
-                        registration_source: 'web_app',
-                        registration_time: new Date().toISOString()
-                    })
+                    const response = await fetch(`${BASE_API}/api/register`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            username,
+                            email,
+                            password,
+                            unique_id: uniqueId,
+                            registration_source: 'web_app',
+                            registration_time: new Date().toISOString()
+                        })
                     });
-                    if (!apiResponse.ok) {
-                    const err = await apiResponse.json().catch(() => ({}));
-                    return { success: false, message: err.message || 'Registration failed' };
+
+                    const result = await response.json();
+
+                    if (!response.ok) {
+                        return { success: false, message: result.message || 'Registration failed' };
                     }
-                    const newUser = await apiResponse.json();
-                    return { success: true, user: newUser };
-                } catch (error) {
-                    console.error("Error during registration:", error);
-                    return { success: false, message: 'Registration system error. Please try again later.' };
+
+                    return { success: true, user: result.user };
+                } catch (err) {
+                    console.error("Registration Error:", err);
+                    return { success: false, message: 'An unexpected error occurred during registration.' };
                 }
-                }
+            }
+
 
             // Register form submission
             registerForm.addEventListener('submit', async function(event) {

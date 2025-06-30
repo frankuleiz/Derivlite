@@ -53,37 +53,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function handleLogin(event) {
         event.preventDefault();
-        loginErrorMessage.style.display = 'none'; // Hide previous errors
+        loginErrorMessage.style.display = 'none';
         const username = usernameInput.value.trim();
-        const password = passwordInput.value; // **NEVER do this in production**
-
-        // **INSECURE SIMULATION - FOR DEMO ONLY**
+        const password = passwordInput.value;
+    
         try {
-            const response = await fetch('../data/users.json'); // Fetch the placeholder data
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            const response = await fetch('https://derivlite.onrender.com/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+    
+            const result = await response.json();
+    
+            if (!response.ok || !result.success) {
+                displayLoginError(result.message || 'Login failed');
+                return;
             }
-            const users = await response.json();
-
-            // Find user by username (case-insensitive comparison example)
-            const user = users.find(u => u.username.toLowerCase() === username.toLowerCase());
-
-            // **SIMULATED** password check (replace with backend call)
-            if (user) { // Check if user exists (password check is omitted for security demo)
-                console.log('Simulated login successful for:', user.username);
-                sessionStorage.setItem('isUserLoggedIn', 'true'); // Set flag
-                sessionStorage.setItem('loggedInUsername', user.username); // Store username maybe
-                hideModal();
-                showToolContent(); // Show the main tool area
-            } else {
-                displayLoginError('Invalid username or password.'); // Generic error
-            }
+    
+            // ✅ Login successful
+            sessionStorage.setItem('isUserLoggedIn', 'true');
+            sessionStorage.setItem('loggedInUsername', result.user.username);
+            sessionStorage.setItem('userRole', result.user.role); // useful for admin logic
+            hideModal();
+            showToolContent();
+            console.log('Login successful for:', result.user.username);
+    
         } catch (error) {
             console.error("Login Error:", error);
-            displayLoginError('Login failed. Please try again later.'); // Show generic error
+            displayLoginError('Login failed. Please try again later.');
         }
     }
-
+    
     function handleLogout() {
         sessionStorage.removeItem('isUserLoggedIn');
         sessionStorage.removeItem('loggedInUsername');
