@@ -337,10 +337,10 @@ body {
 
 @keyframes successPulse {
     0%, 100% {
-        text-shadow: 0 0 2px rgba(52, 211, 153, 0.5);
+        text-shadow: 0 0 2px var(--accent-color);
     }
     50% {
-        text-shadow: 0 0 8px rgba(52, 211, 153, 0.8);
+        text-shadow: 0 0 8px var(--accent-color);
     }
 }
 
