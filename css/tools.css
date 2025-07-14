@@ -1159,3 +1159,360 @@ body::after {
         width: 5px;
     }
 }
+
+/* Trading Button Styles */
+.trade-button {
+    background-color: var(--warning-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    margin-left: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.trade-button:hover {
+    background-color: #27ae60;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Trading iFrame Container - MODIFIED for better responsive sizing */
+.trade-iframe-container {
+    display: none;
+    position: fixed;
+    top: 90px; /* Position below header */
+    right: 20px;
+    width: 45%; /* Take less width */
+    height: calc(100vh - 120px);
+    background-color: #fff;
+    z-index: 900; /* Lower z-index so it doesn't block alerts */
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    flex-direction: column; /* Stack header and iframe vertically */
+    overflow: hidden;
+    transform: translate(0, 0); /* Base transform for all screen sizes */
+    transition: none; /* Remove transition to make dragging smooth */
+    max-width: 95vw; /* Never exceed viewport width */
+    max-height: 95vh; /* Never exceed viewport height */
+}
+
+/* Make dashboard adjust when trading platform is active */
+.dashboard.with-trading-platform {
+    width: 53%;
+    transition: width 0.3s ease;
+}
+
+.iframe-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--primary-bg);
+    color: white;
+    padding: 10px 15px;
+    font-weight: bold;
+    cursor: move; /* Always show move cursor */
+}
+
+/* Drag handle in header for all screen sizes */
+.drag-handle {
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 16px;
+    cursor: move;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Resizing handle for all screen sizes */
+.resize-handle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    bottom: 0;
+    right: 0;
+    cursor: nwse-resize;
+    background: rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.resize-handle::before {
+    content: "";
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 0 10px 10px;
+    border-color: transparent transparent var(--primary-bg) transparent;
+}
+
+.trade-iframe-container.draggable {
+    cursor: move;
+}
+
+/* Make sure iframe fits properly inside container - FIX HEIGHT ISSUES */
+#tradeIframe {
+    width: 100%;
+    height: calc(100% - 40px) !important; /* Force correct height calculation */
+    border: none;
+    display: block; /* Prevent inline display issues */
+    min-height: 300px; /* Ensure minimum height on large screens */
+    flex: 1; /* Allow iframe to fill available space */
+}
+
+/* Just make a few adjustments for mobile screens */
+@media screen and (max-width: 768px) {
+    .trade-iframe-container {
+        width: 90%; /* Wider on small screens */
+        height: min(40vh, 400px); /* Limit height on small screens */
+        max-height: 60vh;
+        top: auto;
+        bottom: 20px;
+        left: 5%;
+        min-width: 280px;
+        min-height: 200px;
+    }
+    
+    /* Ensure iframe contents scale properly */
+    #tradeIframe {
+        height: calc(100% - 40px);
+        width: 100%;
+    }
+    
+    .dashboard.with-trading-platform {
+        width: 100%;
+        margin-bottom: 0;
+    }
+}
+
+/* Bot Download Section Styles */
+.bot-download-section {
+    margin-top: 20px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 15px;
+}
+
+.bot-download-section h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    margin-bottom: 12px;
+    color: var(--accent-color);
+}
+
+.bot-description {
+    font-size: 13px;
+    margin-bottom: 15px;
+    color: var(--muted-text);
+    line-height: 1.4;
+}
+
+.download-btn {
+    background: var(--warning-color);
+    border-color: var(--accent-color);
+    color: var(--panel-bg);
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 12px;
+    padding: 10px;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.download-btn:hover {
+    background: var(--warning-color);
+    box-shadow: 0 0 15px var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.bot-info {
+    background: var(--secondary-bg);
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 12px;
+}
+
+.bot-info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.bot-info-item i {
+    color: var(--highlight-color);
+    width: 14px;
+    text-align: center;
+}
+
+/* Add the @media query before the closing bracket */
+@media screen and (max-width: 768px) {
+    /* Trading iFrame Container - MODIFIED for better responsive sizing */
+    .trade-iframe-container {
+        display: none;
+        position: fixed;
+        top: 90px; /* Position below header */
+        right: 20px;
+        width: 90%; /* Wider on small screens */
+        height: min(40vh, 400px); /* Limit height on small screens */
+        max-height: 60vh;
+        top: auto;
+        bottom: 20px;
+        left: 5%;
+        min-width: 280px;
+        min-height: 200px;
+    }
+    
+    /* Ensure iframe contents scale properly */
+    #tradeIframe {
+        height: calc(100% - 40px);
+        width: 100%;
+    }
+    
+    .dashboard.with-trading-platform {
+        width: 100%;
+        margin-bottom: 0;
+    }
+    
+    .bot-download-section h3 {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+    
+    .bot-description {
+        font-size: 12px;
+        margin-bottom: 12px;
+    }
+    
+    .download-btn {
+        padding: 8px;
+    }
+}
+
+/* Discount Code Styles */
+.discount-code-section {
+    background: var(--secondary-bg);
+    border-radius: 5px;
+    padding: 12px;
+    margin: 15px 0;
+    border: 1px dashed var(--border-color);
+}
+
+.discount-input-group {
+    display: flex;
+    gap: 8px;
+}
+
+.discount-code-input {
+    flex: 1;
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-family: 'Share Tech Mono', monospace;
+    transition: all 0.3s;
+}
+
+.discount-code-input:focus {
+    outline: none;
+    border-color: var(--highlight-color);
+    box-shadow: 0 0 0 2px rgba(0, 196, 255, 0.2);
+}
+
+.discount-code-input::placeholder {
+    color: var(--muted-text);
+    opacity: 0.7;
+}
+
+.discount-btn {
+    background: rgba(0, 196, 255, 0.15);
+    border-color: var(--highlight-color);
+    color: var(--highlight-color);
+    padding: 8px 16px;
+    font-weight: bold;
+}
+
+.discount-btn:hover {
+    background: rgba(0, 196, 255, 0.25);
+    box-shadow: 0 0 10px rgba(0, 196, 255, 0.3);
+}
+
+.discount-message {
+    margin-top: 8px;
+    font-size: 13px;
+    min-height: 18px;
+}
+
+.discount-error {
+    color: var(--danger-color);
+}
+
+.discount-success {
+    color: var(--success-color);
+}
+
+.discount-applied {
+    color: var(--success-color);
+    font-style: italic;
+}
+
+.discount-contact {
+    font-size: 12px;
+    margin-top: 8px;
+    color: var(--muted-text);
+    text-align: center;
+    border-top: 1px dotted var(--border-color);
+    padding-top: 8px;
+    margin-bottom: 0;
+}
+
+.discount-contact a {
+    color: var(--highlight-color);
+    text-decoration: none;
+}
+
+.discount-contact a:hover {
+    text-decoration: underline;
+}
+
+.discount-input-success {
+    border-color: var(--success-color) !important;
+    box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.2) !important;
+}
+
+.discount-input-error {
+    border-color: var(--danger-color) !important;
+    box-shadow: 0 0 0 2px rgba(255, 82, 82, 0.2) !important;
+    animation: errorShake 0.4s ease-in-out;
+}
+
+@keyframes errorShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+}
+
+/* Responsive styles for discount section */
+@media screen and (max-width: 768px) {
+    .discount-input-group {
+        flex-direction: column;
+        gap: 6px;
+    }
+    
+    .discount-btn {
+        width: 100%;
+    }
+    
+    .discount-code-section {
+        padding: 10px;
+        margin: 12px 0;
+    }
+}
