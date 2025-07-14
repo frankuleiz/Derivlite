@@ -297,6 +297,11 @@ body {
     opacity: 0.85;
 }
 
+.log-line.log-matrix {
+    color: var(--success-color) !important;
+}
+
+
 .log-alert {
     animation: alertPulse 1s ease-in-out;
     font-weight: bold;
