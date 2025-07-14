@@ -279,8 +279,8 @@ body {
     background: repeating-linear-gradient(
         transparent,
         transparent 2px,
-        var(--warning-color) 2px,
-        var(--warning-color) 4px
+        rgba(0, 255, 157, 0.03) 2px,
+        rgba(0, 255, 157, 0.03) 4px
     );
     pointer-events: none;
 }
