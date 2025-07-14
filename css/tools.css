@@ -295,12 +295,8 @@ body {
 .log-matrix {
     animation: matrixFadeIn 0.2s ease-in;
     opacity: 0.85;
-}
-
-.log-line.log-matrix {
     color: var(--success-color) !important;
 }
-
 
 .log-alert {
     animation: alertPulse 1s ease-in-out;
@@ -309,6 +305,8 @@ body {
 
 .log-success {
     animation: successPulse 1s ease-in-out;
+    color: var(--success-color) !important;
+
 }
 
 @keyframes fadeIn {
