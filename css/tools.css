@@ -298,6 +298,10 @@ body {
     text-shadow: 0 0 2px var(--success-color);
 }
 
+.log-line.log-matrix {
+    color: var(--success-color);
+}
+
 .log-alert {
     animation: alertPulse 1s ease-in-out;
     font-weight: bold;
