@@ -11,7 +11,7 @@
     --border-color: #4a3a00;         /* Subtle dark gold/brown for edges */
     --danger-color: #ff5252;
     --warning-color: #ffbc2c;
-    --success-color: #ffd700;
+    --success-color: #34d399;
 }
 
 * {
@@ -279,8 +279,8 @@ body {
     background: repeating-linear-gradient(
         transparent,
         transparent 2px,
-        rgba(0, 255, 157, 0.03) 2px,
-        rgba(0, 255, 157, 0.03) 4px
+        rgba(226, 212, 7, 0.03) 2px,
+        rgba(226, 212, 7, 0.03) 4px
     );
     pointer-events: none;
 }
