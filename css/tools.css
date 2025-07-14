@@ -295,6 +295,7 @@ body {
 .log-matrix {
     animation: matrixFadeIn 0.2s ease-in;
     opacity: 0.85;
+    text-shadow: 0 0 2px var(--success-color);
 }
 
 .log-alert {
