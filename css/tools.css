@@ -43,7 +43,7 @@ body {
     background: var(--secondary-bg);
     border: 1px solid var(--border-color);
     margin-bottom: 20px;
-    box-shadow: 0 5px 15px var(--accent-color);
+    box-shadow: 0 1px 5px var(--highlight-color);
     border-radius: 4px;
     position: relative; /* Needed for absolute positioning of admin link */
 }
@@ -295,11 +295,6 @@ body {
 .log-matrix {
     animation: matrixFadeIn 0.2s ease-in;
     opacity: 0.85;
-    color: var(--success-color);
-}
-
-.log-line.log-matrix {
-    color: var(--success-color);
 }
 
 .log-alert {
