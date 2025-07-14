@@ -289,7 +289,7 @@ body {
     margin-bottom: 4px;
     animation: fadeIn 0.3s ease-in;
     line-height: 1.4;
-    text-shadow: 0 0 2px rgba(0, 255, 157, 0.5);
+    text-shadow: 0 0 2px var(--warning-color);
 }
 
 .log-matrix {
@@ -494,7 +494,7 @@ body::after {
     padding: 30px;
     border-radius: 5px;
     border: 1px solid var(--border-color);
-    box-shadow: 0 5px 25px rgba(0, 255, 157, 0.15);
+    box-shadow: 0 5px 25px var(--border-color);
     width: 90%;
     max-width: 400px;
     text-align: center;
