@@ -1177,7 +1177,7 @@ body::after {
 }
 
 .trade-button:hover {
-    background-color: #27ae60;
+    background-color: var(--accent-color);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
