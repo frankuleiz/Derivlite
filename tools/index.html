@@ -13,7 +13,7 @@
     <style>
         /* Trading Button Styles */
         .trade-button {
-            background-color: var(--success-color);
+            background-color: var(--warning-color);
             color: white;
             border: none;
             border-radius: 4px;
@@ -165,9 +165,9 @@
         }
         
         .download-btn {
-            background: rgba(0, 255, 157, 0.15);
+            background: var(--warning-color);
             border-color: var(--accent-color);
-            color: var(--accent-color);
+            color: var(--panel-bg);
             width: 100%;
             justify-content: center;
             margin-bottom: 12px;
@@ -177,8 +177,8 @@
         }
         
         .download-btn:hover {
-            background: rgba(0, 255, 157, 0.3);
-            box-shadow: 0 0 15px rgba(0, 255, 157, 0.5);
+            background: var(--warning-color);
+            box-shadow: 0 0 15px var(--accent-color);
             transform: translateY(-2px);
         }
         
