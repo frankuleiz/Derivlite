@@ -4,11 +4,11 @@
     --primary-bg: #0c0d10;
     --secondary-bg: #151820;
     --panel-bg: #1a1d25;
-    --text-color: #a5f5d7;
-    --muted-text: #7aa689;
-    --accent-color: #00ff9d;
-    --highlight-color: #00c4ff;
-    --border-color: #2a3040;
+    --text-color: #fff8d1;           /* Soft creamy yellow for readability */
+    --muted-text: #d6c586;           /* Muted ochre tone for secondary text */
+    --accent-color: #ffd700;         /* Bright golden yellow for emphasis */
+    --highlight-color: #ffea70;      /* Pale yellow highlight (hover, glow) */
+    --border-color: #4a3a00;         /* Subtle dark gold/brown for edges */
     --danger-color: #ff5252;
     --warning-color: #ffbc2c;
     --success-color: #34d399;
@@ -224,14 +224,14 @@ body {
 }
 
 .btn.primary {
-    background: rgba(0, 255, 157, 0.2);
+    background: var(--warning-color);
     border-color: var(--accent-color);
-    color: var(--accent-color);
+    color: var(--panel-bg);
 }
 
 .btn.primary:hover {
-    background: rgba(0, 255, 157, 0.3);
-    box-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+    background: var(--warning-color);
+    box-shadow: 0 0 10px var(--accent-color);
 }
 
 .btn.danger {
