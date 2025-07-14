@@ -11,7 +11,7 @@
     --border-color: #4a3a00;         /* Subtle dark gold/brown for edges */
     --danger-color: #ff5252;
     --warning-color: #ffbc2c;
-    --success-color: #34d399;
+    --success-color: #e6d816;
 }
 
 * {
@@ -295,7 +295,6 @@ body {
 .log-matrix {
     animation: matrixFadeIn 0.2s ease-in;
     opacity: 0.85;
-    color: var(--warning-color);
 }
 
 .log-alert {
@@ -1178,7 +1177,7 @@ body::after {
 }
 
 .trade-button:hover {
-    background-color: var(--accent-color);
+    background-color: var(--warning-color);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
