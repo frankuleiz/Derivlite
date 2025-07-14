@@ -43,7 +43,7 @@ body {
     background: var(--secondary-bg);
     border: 1px solid var(--border-color);
     margin-bottom: 20px;
-    box-shadow: 0 5px 15px rgba(0, 255, 157, 0.08);
+    box-shadow: 0 5px 15px var(--accent-color);
     border-radius: 4px;
     position: relative; /* Needed for absolute positioning of admin link */
 }
@@ -75,7 +75,7 @@ body {
     font-weight: bold;
     letter-spacing: 2px;
     color: var(--accent-color);
-    text-shadow: 0 0 5px rgba(0, 255, 157, 0.5);
+    text-shadow: 0 0 5px var(--accent-color);
 }
 
 .accent {
